@@ -39,6 +39,14 @@ app.add_middleware(
 FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
 
 
+@app.get("/health")
+@app.head("/health")
+@app.head("/")
+@app.get("/ping")
+async def health_check():
+    return {"status": "ok", "message": "Service is healthy and active"}
+
+
 @app.post("/api/check", response_model=CheckResponse)
 async def check_page(request: CheckRequest):
     """

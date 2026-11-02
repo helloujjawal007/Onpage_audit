@@ -67,6 +67,17 @@ async def main():
         ("D. Keyword in URL / H1 / H2", SubCheckDisplay(res.check_d_onpage.status, f"Density: {res.check_d_onpage.keyword_density}%")),
     ]
 
+    if res.phase2:
+        p2 = res.phase2
+        checks.extend([
+            ("P2. Title & Meta (Length/Px)", SubCheckDisplay(p2.title_meta.status, f"{p2.title_meta.title_char_length}c (~{p2.title_meta.title_pixel_width}px) | Meta: {p2.title_meta.meta_char_length}c")),
+            ("P2. Heading Hierarchy (H1/H2)", SubCheckDisplay(p2.heading_hierarchy.status, f"H1 count: {p2.heading_hierarchy.h1_count} | Total: {p2.heading_hierarchy.total_headings}")),
+            ("P2. Images (Alt text & WebP)", SubCheckDisplay(p2.image_audit.status, f"Total: {p2.image_audit.total_images} | Non-WebP: {p2.image_audit.non_webp_count} | No Alt: {p2.image_audit.missing_alt_count}")),
+            ("P2. Schema (Article/Dates)", SubCheckDisplay(p2.schema_validation.status, f"Type: {p2.schema_validation.article_type or 'None'}")),
+            ("P2. FAQ Section & Schema", SubCheckDisplay(p2.faq_check.status, f"Section: {'Yes' if p2.faq_check.faq_section_found else 'No'} | Schema: {'Yes' if p2.faq_check.faq_schema_present else 'No'}")),
+            ("P2. Key Takeaways Section", SubCheckDisplay(p2.key_takeaways.status, f"Found: {'Yes' if p2.key_takeaways.takeaways_section_found else 'No'} | KW: {'Yes' if p2.key_takeaways.has_keyword else 'No'}")),
+        ])
+
     print(f"{'CHECK':<35} {'RESULT':<10} {'DETAILS'}")
     print("-" * 65)
     for name, c in checks:
@@ -105,3 +116,4 @@ class SubCheckDisplay:
 
 if __name__ == "__main__":
     asyncio.run(main())
+

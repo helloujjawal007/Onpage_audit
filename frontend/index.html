@@ -371,6 +371,169 @@
         <div id="onpageIssuesList" class="px-6 pb-6 text-xs text-rose-600 space-y-1 hidden"></div>
       </div>
 
+      <!-- Phase 2 SEO Signals: Title/Meta, Images, Hierarchy, Schema & Takeaways -->
+      <div id="phase2Section" class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase bg-indigo-100 text-indigo-700">Phase 2</span>
+            <h3 class="font-bold text-slate-900 text-base">Content, Media & Technical Schema Audit</h3>
+          </div>
+          <span class="text-xs text-slate-400">SERP Pixels, WebP Images & Schema.org</span>
+        </div>
+
+        <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Card 1: Title Tag & SERP Pixels -->
+          <div class="bg-slate-50/60 p-5 rounded-xl border border-slate-200 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center space-x-1.5">
+                <i class="fa-solid fa-heading text-indigo-500"></i>
+                <span>Title Tag (SERP Length)</span>
+              </span>
+              <span id="p2TitleStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full"></span>
+            </div>
+            <div id="p2TitleText" class="text-xs font-semibold text-slate-900 break-words font-mono bg-white p-2.5 rounded-lg border border-slate-200/60">
+              -
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <div class="bg-white p-2 rounded-lg border border-slate-200/60">
+                <span class="text-[10px] text-slate-400 block uppercase font-bold">Char Length</span>
+                <span id="p2TitleChars" class="font-bold text-slate-800">0 / 60</span>
+              </div>
+              <div class="bg-white p-2 rounded-lg border border-slate-200/60">
+                <span class="text-[10px] text-slate-400 block uppercase font-bold">Est. Pixel Width</span>
+                <span id="p2TitlePixels" class="font-bold text-slate-800">~0px / 580px</span>
+              </div>
+            </div>
+            <div id="p2TitleKeyword" class="text-[11px] font-medium text-slate-600 flex items-center space-x-1"></div>
+          </div>
+
+          <!-- Card 2: Meta Description & SERP Pixels -->
+          <div class="bg-slate-50/60 p-5 rounded-xl border border-slate-200 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center space-x-1.5">
+                <i class="fa-regular fa-file-lines text-indigo-500"></i>
+                <span>Meta Description</span>
+              </span>
+              <span id="p2MetaStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full"></span>
+            </div>
+            <div id="p2MetaText" class="text-xs text-slate-700 break-words font-mono bg-white p-2.5 rounded-lg border border-slate-200/60 max-h-24 overflow-y-auto">
+              -
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <div class="bg-white p-2 rounded-lg border border-slate-200/60">
+                <span class="text-[10px] text-slate-400 block uppercase font-bold">Char Length</span>
+                <span id="p2MetaChars" class="font-bold text-slate-800">0 / 160</span>
+              </div>
+              <div class="bg-white p-2 rounded-lg border border-slate-200/60">
+                <span class="text-[10px] text-slate-400 block uppercase font-bold">Est. Pixel Width</span>
+                <span id="p2MetaPixels" class="font-bold text-slate-800">~0px / 960px</span>
+              </div>
+            </div>
+            <div id="p2MetaKeyword" class="text-[11px] font-medium text-slate-600 flex items-center space-x-1"></div>
+          </div>
+
+          <!-- Card 3: Heading Hierarchy -->
+          <div class="bg-slate-50/60 p-5 rounded-xl border border-slate-200 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center space-x-1.5">
+                <i class="fa-solid fa-sitemap text-indigo-500"></i>
+                <span>Heading Hierarchy</span>
+              </span>
+              <span id="p2HeadingStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full"></span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <div class="bg-white p-2.5 rounded-lg border border-slate-200/60">
+                <span class="text-[10px] text-slate-400 block uppercase font-bold">H1 Count</span>
+                <span id="p2H1Count" class="font-bold text-slate-800">0 (Rec: 1)</span>
+              </div>
+              <div class="bg-white p-2.5 rounded-lg border border-slate-200/60">
+                <span class="text-[10px] text-slate-400 block uppercase font-bold">Total Headings</span>
+                <span id="p2TotalHeadings" class="font-bold text-slate-800">0</span>
+              </div>
+            </div>
+            <div id="p2HeadingDetails" class="text-[11px] text-slate-600 space-y-1"></div>
+          </div>
+
+          <!-- Card 4: Images & Media Audit -->
+          <div class="bg-slate-50/60 p-5 rounded-xl border border-slate-200 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center space-x-1.5">
+                <i class="fa-regular fa-image text-indigo-500"></i>
+                <span>Images (Alt & WebP)</span>
+              </span>
+              <span id="p2ImageStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full"></span>
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-xs text-center">
+              <div class="bg-white p-2 rounded-lg border border-slate-200/60">
+                <span class="text-[10px] text-slate-400 block uppercase font-bold">Total</span>
+                <span id="p2TotalImages" class="font-bold text-slate-800">0</span>
+              </div>
+              <div class="bg-white p-2 rounded-lg border border-slate-200/60">
+                <span class="text-[10px] text-slate-400 block uppercase font-bold">No Alt</span>
+                <span id="p2MissingAlt" class="font-bold text-rose-600">0</span>
+              </div>
+              <div class="bg-white p-2 rounded-lg border border-slate-200/60">
+                <span class="text-[10px] text-slate-400 block uppercase font-bold">Non-WebP</span>
+                <span id="p2NonWebP" class="font-bold text-amber-600">0</span>
+              </div>
+            </div>
+            <div id="p2ImageDetails" class="text-[11px] text-slate-600 space-y-1"></div>
+          </div>
+
+          <!-- Card 5: Schema Structured Data -->
+          <div class="bg-slate-50/60 p-5 rounded-xl border border-slate-200 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center space-x-1.5">
+                <i class="fa-solid fa-code text-indigo-500"></i>
+                <span>Schema (JSON-LD)</span>
+              </span>
+              <span id="p2SchemaStatusBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full"></span>
+            </div>
+            <div class="bg-white p-2.5 rounded-lg border border-slate-200/60 text-xs space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500">Article/Blog Schema:</span>
+                <span id="p2ArticleType" class="font-bold text-slate-800">None</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500">Dates (Published/Mod):</span>
+                <span id="p2SchemaDates" class="font-bold text-slate-800">Missing</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500">Author Specified:</span>
+                <span id="p2SchemaAuthor" class="font-bold text-slate-800">No</span>
+              </div>
+            </div>
+            <div id="p2SchemaTypesFound" class="text-[10px] text-slate-400 truncate"></div>
+          </div>
+
+          <!-- Card 6: FAQ & Key Takeaways -->
+          <div class="bg-slate-50/60 p-5 rounded-xl border border-slate-200 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center space-x-1.5">
+                <i class="fa-solid fa-lightbulb text-indigo-500"></i>
+                <span>FAQ & Key Takeaways</span>
+              </span>
+              <span id="p2ContentFeaturesBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full"></span>
+            </div>
+            <div class="bg-white p-2.5 rounded-lg border border-slate-200/60 text-xs space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500">FAQ Section:</span>
+                <span id="p2FaqSectionStatus" class="font-bold text-slate-800">-</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500">FAQPage Schema:</span>
+                <span id="p2FaqSchemaStatus" class="font-bold text-slate-800">-</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500">Key Takeaways Block:</span>
+                <span id="p2TakeawaysStatus" class="font-bold text-slate-800">-</span>
+              </div>
+            </div>
+            <div id="p2TakeawaysDetails" class="text-[11px] text-slate-600"></div>
+          </div>
+        </div>
+      </div>
+
       <!-- Complete Link Inventory Section -->
       <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
         <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -464,3 +627,4 @@
   <script src="/static/app.js"></script>
 </body>
 </html>
+

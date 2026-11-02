@@ -82,6 +82,84 @@ class OnPageKeywordResult(BaseModel):
     issues: List[str] = Field(default_factory=list)
 
 
+# Phase 2 Models
+class TitleMetaCheckResult(BaseModel):
+    status: str  # "PASS", "WARN", "FAIL"
+    title: Optional[str] = None
+    title_char_length: int = 0
+    title_pixel_width: int = 0
+    title_has_keyword: bool = False
+    meta_description: Optional[str] = None
+    meta_char_length: int = 0
+    meta_pixel_width: int = 0
+    meta_has_keyword: bool = False
+    issues: List[str] = Field(default_factory=list)
+
+
+class HeadingHierarchyResult(BaseModel):
+    status: str  # "PASS", "WARN", "FAIL"
+    h1_count: int = 0
+    h1_text: Optional[str] = None
+    total_headings: int = 0
+    hierarchy_valid: bool = True
+    issues: List[str] = Field(default_factory=list)
+
+
+class ImageAuditItem(BaseModel):
+    src: str
+    alt: str
+    format: str
+    is_webp_or_modern: bool
+    size_kb: Optional[float] = None
+    issues: List[str] = Field(default_factory=list)
+
+
+class ImageAuditResult(BaseModel):
+    status: str  # "PASS", "WARN", "FAIL"
+    total_images: int = 0
+    missing_alt_count: int = 0
+    non_webp_count: int = 0
+    large_image_count: int = 0
+    images: List[ImageAuditItem] = Field(default_factory=list)
+    issues: List[str] = Field(default_factory=list)
+
+
+class SchemaValidationResult(BaseModel):
+    status: str  # "PASS", "WARN", "FAIL"
+    schema_types_found: List[str] = Field(default_factory=list)
+    has_article_schema: bool = False
+    article_type: Optional[str] = None
+    has_faq_schema: bool = False
+    dates_present: Dict[str, Optional[str]] = Field(default_factory=dict)
+    has_author: bool = False
+    issues: List[str] = Field(default_factory=list)
+
+
+class FAQSectionResult(BaseModel):
+    status: str  # "PASS", "WARN", "FAIL"
+    faq_section_found: bool = False
+    faq_schema_present: bool = False
+    heading_text: Optional[str] = None
+    issues: List[str] = Field(default_factory=list)
+
+
+class KeyTakeawaysResult(BaseModel):
+    status: str  # "PASS", "WARN", "FAIL"
+    takeaways_section_found: bool = False
+    has_keyword: bool = False
+    heading_text: Optional[str] = None
+    issues: List[str] = Field(default_factory=list)
+
+
+class Phase2Checks(BaseModel):
+    title_meta: TitleMetaCheckResult
+    heading_hierarchy: HeadingHierarchyResult
+    image_audit: ImageAuditResult
+    schema_validation: SchemaValidationResult
+    faq_check: FAQSectionResult
+    key_takeaways: KeyTakeawaysResult
+
+
 class CheckResponse(BaseModel):
     id: str
     timestamp: str
@@ -98,6 +176,7 @@ class CheckResponse(BaseModel):
     check_c5_duplicates: SubCheckResult
     check_d_kd: KDResult
     check_d_onpage: OnPageKeywordResult
+    phase2: Optional[Phase2Checks] = None
     overall_pass: bool
     total_links: int
     internal_links_count: int

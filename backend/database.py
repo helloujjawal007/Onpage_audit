@@ -179,3 +179,4 @@ def get_check_by_id(record_id: str) -> Optional[Dict[str, Any]]:
     if row:
         return json.loads(row["result_json"])
     return None
+

@@ -100,3 +100,4 @@ All 11 unit & integration tests verify domain validation, URL normalization, anc
   - Checklist Pass/Fail summary
   - Actionable issues table (`Link`, `Anchor`, `Problem`, `Suggested Fix`)
   - Complete link inventory (Destination, Anchor, Type, Target Blank, Follow status)
+

@@ -29,6 +29,7 @@ from backend.models import (
 from backend.kd_service import fetch_keyword_data
 from backend.crawler import scan_incoming_internal_links
 from backend.database import save_check_history
+from backend.phase2 import run_phase2_audit
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
@@ -637,6 +638,15 @@ async def run_full_check(req: CheckRequest) -> CheckResponse:
     kd_res = await fetch_keyword_data(req.primary_keyword, req.country)
     onpage_res = evaluate_onpage_keyword(soup, body_container, gate.final_url, req.primary_keyword)
 
+    # Phase 2 Checks: Title/Meta, Headings, Images, Schema, FAQ, Key Takeaways
+    phase2_checks, phase2_issues = await run_phase2_audit(
+        soup=soup,
+        body_container=body_container,
+        page_url=gate.final_url,
+        primary_keyword=req.primary_keyword
+    )
+    failed_issues.extend(phase2_issues)
+
     # Overall pass condition
     all_mandatory = [
         check_a.status == "PASS",
@@ -665,6 +675,7 @@ async def run_full_check(req: CheckRequest) -> CheckResponse:
         check_c5_duplicates=check_c5,
         check_d_kd=kd_res,
         check_d_onpage=onpage_res,
+        phase2=phase2_checks,
         overall_pass=overall_pass,
         total_links=total_links,
         internal_links_count=len(internal_links),

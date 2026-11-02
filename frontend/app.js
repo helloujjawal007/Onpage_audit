@@ -287,7 +287,10 @@ function renderAuditResults(d) {
   // 4. On-Page Keyword Signals
   renderOnPageSignals(d.check_d_onpage || {});
 
-  // 5. Link Inventory
+  // 5. Phase 2 Content, Media & Schema Signals
+  renderPhase2Signals(d.phase2 || {});
+
+  // 6. Link Inventory
   updateInventoryCounts(d);
   renderLinkInventory();
 }
@@ -409,6 +412,118 @@ function renderOnPageSignals(op) {
     issuesList.innerHTML = op.issues.map(i => `<div>• ${escapeHtml(i)}</div>`).join("");
   } else {
     issuesList.classList.add("hidden");
+  }
+}
+
+function renderPhase2Signals(p2) {
+  if (!p2) return;
+
+  // 1. Title
+  const tm = p2.title_meta || {};
+  const titleBadge = document.getElementById("p2TitleStatusBadge");
+  titleBadge.textContent = tm.status || "N/A";
+  titleBadge.className = `text-[10px] font-bold px-2 py-0.5 rounded-full ${
+    tm.status === "PASS" ? "badge-pass" : (tm.status === "WARN" ? "badge-warn" : "badge-fail")
+  }`;
+  document.getElementById("p2TitleText").textContent = tm.title || "(Missing <title> tag)";
+  document.getElementById("p2TitleChars").textContent = `${tm.title_char_length} / 60`;
+  document.getElementById("p2TitlePixels").textContent = `~${tm.title_pixel_width}px / 580px`;
+  document.getElementById("p2TitleKeyword").innerHTML = tm.title_has_keyword ?
+    `<span class="text-emerald-600 font-bold"><i class="fa-solid fa-check mr-1"></i>Primary keyword present in Title</span>` :
+    `<span class="text-rose-500 font-bold"><i class="fa-solid fa-xmark mr-1"></i>Keyword missing from Title</span>`;
+
+  // 2. Meta Description
+  const metaBadge = document.getElementById("p2MetaStatusBadge");
+  metaBadge.textContent = tm.status || "N/A";
+  metaBadge.className = `text-[10px] font-bold px-2 py-0.5 rounded-full ${
+    tm.meta_description ? (tm.issues.some(i => i.includes("Meta")) ? "badge-warn" : "badge-pass") : "badge-fail"
+  }`;
+  document.getElementById("p2MetaText").textContent = tm.meta_description || "(Missing meta description)";
+  document.getElementById("p2MetaChars").textContent = `${tm.meta_char_length} / 160`;
+  document.getElementById("p2MetaPixels").textContent = `~${tm.meta_pixel_width}px / 960px`;
+  document.getElementById("p2MetaKeyword").innerHTML = tm.meta_has_keyword ?
+    `<span class="text-emerald-600 font-bold"><i class="fa-solid fa-check mr-1"></i>Primary keyword present in Meta Description</span>` :
+    `<span class="text-rose-500 font-bold"><i class="fa-solid fa-xmark mr-1"></i>Keyword missing from Meta</span>`;
+
+  // 3. Heading Hierarchy
+  const hh = p2.heading_hierarchy || {};
+  const headingBadge = document.getElementById("p2HeadingStatusBadge");
+  headingBadge.textContent = hh.status || "N/A";
+  headingBadge.className = `text-[10px] font-bold px-2 py-0.5 rounded-full ${
+    hh.status === "PASS" ? "badge-pass" : "badge-fail"
+  }`;
+  document.getElementById("p2H1Count").textContent = `${hh.h1_count} (Target: 1)`;
+  document.getElementById("p2H1Count").className = hh.h1_count === 1 ? "font-bold text-emerald-600" : "font-bold text-rose-600";
+  document.getElementById("p2TotalHeadings").textContent = hh.total_headings;
+  const headingDetails = document.getElementById("p2HeadingDetails");
+  if (hh.issues && hh.issues.length > 0) {
+    headingDetails.innerHTML = hh.issues.map(i => `<div class="text-rose-600">• ${escapeHtml(i)}</div>`).join("");
+  } else {
+    headingDetails.innerHTML = `<span class="text-emerald-600"><i class="fa-solid fa-circle-check mr-1"></i>Logical heading sequence (no skipped levels)</span>`;
+  }
+
+  // 4. Images Audit
+  const img = p2.image_audit || {};
+  const imgBadge = document.getElementById("p2ImageStatusBadge");
+  imgBadge.textContent = img.status || "N/A";
+  imgBadge.className = `text-[10px] font-bold px-2 py-0.5 rounded-full ${
+    img.status === "PASS" ? "badge-pass" : (img.status === "WARN" ? "badge-warn" : "badge-fail")
+  }`;
+  document.getElementById("p2TotalImages").textContent = img.total_images;
+  document.getElementById("p2MissingAlt").textContent = img.missing_alt_count;
+  document.getElementById("p2NonWebP").textContent = img.non_webp_count;
+  const imgDetails = document.getElementById("p2ImageDetails");
+  if (img.issues && img.issues.length > 0) {
+    imgDetails.innerHTML = img.issues.map(i => `<div class="text-amber-700">• ${escapeHtml(i)}</div>`).join("");
+  } else {
+    imgDetails.innerHTML = `<span class="text-emerald-600"><i class="fa-solid fa-circle-check mr-1"></i>All images have descriptive alt & modern compression</span>`;
+  }
+
+  // 5. Schema Structured Data
+  const sc = p2.schema_validation || {};
+  const scBadge = document.getElementById("p2SchemaStatusBadge");
+  scBadge.textContent = sc.status || "N/A";
+  scBadge.className = `text-[10px] font-bold px-2 py-0.5 rounded-full ${
+    sc.status === "PASS" ? "badge-pass" : (sc.status === "WARN" ? "badge-warn" : "badge-fail")
+  }`;
+  document.getElementById("p2ArticleType").textContent = sc.article_type || (sc.has_article_schema ? "Article" : "Missing");
+  document.getElementById("p2ArticleType").className = sc.has_article_schema ? "font-bold text-emerald-600" : "font-bold text-rose-600";
+  
+  const hasDates = sc.dates_present && (sc.dates_present.datePublished || sc.dates_present.dateModified);
+  document.getElementById("p2SchemaDates").textContent = hasDates ? "Verified" : "Missing";
+  document.getElementById("p2SchemaDates").className = hasDates ? "font-bold text-emerald-600" : "font-bold text-amber-600";
+  
+  document.getElementById("p2SchemaAuthor").textContent = sc.has_author ? "Yes" : "Missing";
+  document.getElementById("p2SchemaAuthor").className = sc.has_author ? "font-bold text-emerald-600" : "font-bold text-amber-600";
+
+  document.getElementById("p2SchemaTypesFound").textContent = (sc.schema_types_found && sc.schema_types_found.length > 0) ?
+    `Types: ${sc.schema_types_found.join(", ")}` : "No JSON-LD schemas detected";
+
+  // 6. FAQ & Takeaways
+  const faq = p2.faq_check || {};
+  const tk = p2.key_takeaways || {};
+  const cfBadge = document.getElementById("p2ContentFeaturesBadge");
+  const cfStatus = (faq.status === "PASS" && tk.status === "PASS") ? "PASS" : "WARN";
+  cfBadge.textContent = cfStatus;
+  cfBadge.className = `text-[10px] font-bold px-2 py-0.5 rounded-full ${
+    cfStatus === "PASS" ? "badge-pass" : "badge-warn"
+  }`;
+
+  document.getElementById("p2FaqSectionStatus").textContent = faq.faq_section_found ? "Detected" : "None";
+  document.getElementById("p2FaqSectionStatus").className = faq.faq_section_found ? "font-bold text-indigo-600" : "font-bold text-slate-500";
+
+  document.getElementById("p2FaqSchemaStatus").textContent = faq.faq_schema_present ? "Present (Rich Snippet Ready)" : (faq.faq_section_found ? "Missing Schema!" : "None");
+  document.getElementById("p2FaqSchemaStatus").className = faq.faq_schema_present ? "font-bold text-emerald-600" : (faq.faq_section_found ? "font-bold text-rose-600" : "font-bold text-slate-500");
+
+  document.getElementById("p2TakeawaysStatus").textContent = tk.takeaways_section_found ? (tk.has_keyword ? "Found (Has KW)" : "Found (Missing KW)") : "Missing";
+  document.getElementById("p2TakeawaysStatus").className = (tk.takeaways_section_found && tk.has_keyword) ? "font-bold text-emerald-600" : "font-bold text-amber-600";
+
+  const tkDetails = document.getElementById("p2TakeawaysDetails");
+  const tkIssues = [...(faq.issues || []), ...(tk.issues || [])];
+  if (tkIssues.length > 0) {
+    tkDetails.innerHTML = tkIssues.map(i => `<div class="text-amber-700 text-[11px] mt-1">• ${escapeHtml(i)}</div>`).join("");
+  } else {
+    tkDetails.innerHTML = `<span class="text-emerald-600 text-[11px]"><i class="fa-solid fa-circle-check mr-1"></i>FAQ & Key Takeaways configured</span>`;
   }
 }
 
@@ -536,3 +651,4 @@ function escapeHtml(str) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+

@@ -47,3 +47,4 @@ def load_default_site_profiles() -> Dict[str, Any]:
         except Exception:
             pass
     return {}
+

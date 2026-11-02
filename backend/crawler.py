@@ -220,3 +220,4 @@ async def scan_incoming_internal_links(
         "pages_analyzed": analyzed_count or len(pages_to_crawl),
         "source": "live sitemap crawl"
     }
+

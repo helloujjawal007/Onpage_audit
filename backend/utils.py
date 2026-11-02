@@ -158,3 +158,4 @@ def check_anchor_quality(text: str, href: str, bad_anchors: List[str]) -> tuple[
             return True, f"Generic anchor text: '{cleaned}'"
             
     return False, None
+

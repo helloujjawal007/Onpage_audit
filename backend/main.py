@@ -115,6 +115,7 @@ async def export_csv(check_id: str):
     # Checks summary table
     writer.writerow(["CHECKLIST SUMMARY"])
     writer.writerow(["Check ID", "Check Name", "Status", "Summary Details"])
+    p2 = data.get("phase2", {}) or {}
     checks = [
         ("A", data.get("check_a_new_tab", {})),
         ("B", data.get("check_b_follow", {})),
@@ -123,7 +124,13 @@ async def export_csv(check_id: str):
         ("C3", data.get("check_c3_product_link", {})),
         ("C4", data.get("check_c4_anchor_quality", {})),
         ("C5", data.get("check_c5_duplicates", {})),
-        ("D", {"name": "D. Keyword & On-page", "status": data.get("check_d_onpage", {}).get("status", "N/A"), "summary": f"Density: {data.get('check_d_onpage', {}).get('keyword_density')}% | Words: {data.get('check_d_onpage', {}).get('total_words')}"})
+        ("D", {"name": "D. Keyword & On-page", "status": data.get("check_d_onpage", {}).get("status", "N/A"), "summary": f"Density: {data.get('check_d_onpage', {}).get('keyword_density')}% | Words: {data.get('check_d_onpage', {}).get('total_words')}"}),
+        ("P2-1", {"name": "Title & Meta Tags", "status": p2.get("title_meta", {}).get("status", "N/A"), "summary": f"Title: {p2.get('title_meta', {}).get('title_char_length')} chars (~{p2.get('title_meta', {}).get('title_pixel_width')}px) | Meta: {p2.get('title_meta', {}).get('meta_char_length')} chars"}),
+        ("P2-2", {"name": "Heading Hierarchy", "status": p2.get("heading_hierarchy", {}).get("status", "N/A"), "summary": f"H1 count: {p2.get('heading_hierarchy', {}).get('h1_count')} | Total headings: {p2.get('heading_hierarchy', {}).get('total_headings')}"}),
+        ("P2-3", {"name": "Images Audit", "status": p2.get("image_audit", {}).get("status", "N/A"), "summary": f"Total: {p2.get('image_audit', {}).get('total_images')} | Missing Alt: {p2.get('image_audit', {}).get('missing_alt_count')} | Non-WebP: {p2.get('image_audit', {}).get('non_webp_count')}"}),
+        ("P2-4", {"name": "Schema Structured Data", "status": p2.get("schema_validation", {}).get("status", "N/A"), "summary": f"Types: {', '.join(p2.get('schema_validation', {}).get('schema_types_found', [])) or 'None'}"}),
+        ("P2-5", {"name": "FAQ Section & Schema", "status": p2.get("faq_check", {}).get("status", "N/A"), "summary": f"Section: {'Yes' if p2.get('faq_check', {}).get('faq_section_found') else 'No'} | Schema: {'Yes' if p2.get('faq_check', {}).get('faq_schema_present') else 'No'}"}),
+        ("P2-6", {"name": "Key Takeaways Section", "status": p2.get("key_takeaways", {}).get("status", "N/A"), "summary": f"Found: {'Yes' if p2.get('key_takeaways', {}).get('takeaways_section_found') else 'No'} | Has KW: {'Yes' if p2.get('key_takeaways', {}).get('has_keyword') else 'No'}"})
     ]
     for cid, c in checks:
         writer.writerow([cid, c.get("name"), c.get("status"), c.get("summary")])
@@ -177,3 +184,4 @@ if FRONTEND_DIR.exists():
     @app.get("/")
     async def serve_index():
         return FileResponse(str(FRONTEND_DIR / "index.html"))
+

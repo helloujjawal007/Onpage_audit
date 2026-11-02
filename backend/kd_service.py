@@ -96,3 +96,4 @@ async def fetch_keyword_data(keyword: str, country: str = "us") -> KDResult:
         source="Estimator (Offline Mode)",
         country=country_clean
     )
+

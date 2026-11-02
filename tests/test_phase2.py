@@ -151,3 +151,4 @@ def test_key_takeaways():
     assert res.takeaways_section_found is True
     assert res.has_keyword is True
     assert res.status == "PASS"
+

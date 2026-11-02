@@ -1,0 +1,20 @@
+{
+  "signeasy.com": {
+    "site_url": "https://signeasy.com",
+    "product_page_url": "https://signeasy.com/electronic-signature-software",
+    "product_anchor_keywords": [
+      "eSignature software",
+      "eSign tool",
+      "electronic signature software",
+      "digital signature tool",
+      "sign documents online"
+    ],
+    "internal_subdomains": [
+      "app.signeasy.com",
+      "pages.signeasy.com",
+      "help.signeasy.com",
+      "blog.signeasy.com"
+    ],
+    "country": "us"
+  }
+}

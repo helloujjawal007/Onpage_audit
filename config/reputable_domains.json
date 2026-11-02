@@ -1,0 +1,27 @@
+{
+  "tlds": [
+    ".org",
+    ".gov",
+    ".gov.in",
+    ".edu",
+    ".edu.in",
+    ".ac.uk",
+    ".mil"
+  ],
+  "domains": [
+    "wikipedia.org",
+    "w3.org",
+    "github.com",
+    "who.int",
+    "un.org",
+    "nih.gov",
+    "cdc.gov",
+    "ieee.org",
+    "arxiv.org",
+    "nature.com",
+    "science.org",
+    "eff.org",
+    "mozilla.org",
+    "w3schools.com"
+  ]
+}
